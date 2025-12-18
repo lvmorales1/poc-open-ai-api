@@ -52,6 +52,11 @@ npm run completions
 npm run embeddings
 ```
 
+**Chat with Document** - Ask questions grounded in a vector store you already have:
+```bash
+npm run chat-doc
+```
+
 ### Watch mode (auto-reload on changes):
 ```bash
 npm run dev
@@ -65,7 +70,8 @@ npm run dev
 ├── examples/
 │   ├── chat.js          # Multi-turn conversation example
 │   ├── completions.js   # Text completion example
-│   └── embeddings.js    # Text embedding example
+│   ├── embeddings.js    # Text embedding example
+│   └── chat-doc.js      # Chat grounded in a local document
 ├── package.json
 ├── .env.example
 └── .gitignore
@@ -84,6 +90,9 @@ Shows how to generate text completions for prompts.
 
 ### 4. **Embeddings** (examples/embeddings.js)
 Generate vector embeddings for text (useful for semantic search, similarity, etc.).
+
+### 5. **Chat with Document** (examples/chat-doc.js)
+Interactive terminal chat that uses the Assistants API with `file_search`. It requires `OPENAI_VECTOR_STORE_ID` to point to an existing vector store that already contains your files.
 
 ## API Features Being Tested
 

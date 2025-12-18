@@ -8,6 +8,7 @@
         "chat": "node examples/chat.js",
         "completions": "node examples/completions.js",
         "embeddings": "node examples/embeddings.js",
+        "chat-doc": "node examples/chat-doc.js",
         "dev": "node --watch index.js"
     },
     "author": "",
