@@ -1,0 +1,119 @@
+# OpenAI API POC - JavaScript
+
+A proof-of-concept project for testing the OpenAI API using Node.js and JavaScript.
+
+## Setup
+
+### Prerequisites
+
+- Node.js 18+
+- OpenAI API key (get one at https://platform.openai.com/api-keys)
+
+### Installation
+
+1. Clone the repository
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+
+3. Create a `.env` file based on `.env.example`:
+   ```bash
+   cp .env.example .env
+   ```
+
+4. Add your OpenAI API key to `.env`:
+   ```
+   OPENAI_API_KEY=sk-...
+   OPENAI_MODEL=gpt-4o-mini
+   ```
+
+## Usage
+
+### Run the basic example:
+```bash
+npm start
+```
+
+### Run specific examples:
+
+**Chat Example** - Multi-turn conversation:
+```bash
+npm run chat
+```
+
+**Completions Example** - Text completion:
+```bash
+npm run completions
+```
+
+**Embeddings Example** - Generate text embeddings:
+```bash
+npm run embeddings
+```
+
+### Watch mode (auto-reload on changes):
+```bash
+npm run dev
+```
+
+## Project Structure
+
+```
+.
+├── index.js              # Main entry point - simple chat example
+├── examples/
+│   ├── chat.js          # Multi-turn conversation example
+│   ├── completions.js   # Text completion example
+│   └── embeddings.js    # Text embedding example
+├── package.json
+├── .env.example
+└── .gitignore
+```
+
+## Examples Overview
+
+### 1. **Simple Chat** (index.js)
+Basic single-message conversation with Claude/GPT model.
+
+### 2. **Multi-turn Chat** (examples/chat.js)
+Demonstrates conversation history and context maintenance across multiple turns.
+
+### 3. **Text Completions** (examples/completions.js)
+Shows how to generate text completions for prompts.
+
+### 4. **Embeddings** (examples/embeddings.js)
+Generate vector embeddings for text (useful for semantic search, similarity, etc.).
+
+## API Features Being Tested
+
+- ✅ Authentication with API key
+- ✅ Single-turn messages
+- ✅ Multi-turn conversations
+- ✅ Text completions
+- ✅ Embeddings generation
+- ✅ Error handling
+- ✅ Environment configuration
+
+## Error Handling
+
+All examples include error handling for:
+- API authentication errors
+- Rate limiting
+- Network errors
+- Invalid requests
+
+## Next Steps
+
+- Add streaming support
+- Implement function calling
+- Add more sophisticated error handling
+- Add logging
+- Add unit tests
+- Implement retry logic with exponential backoff
+
+## Resources
+
+- [OpenAI API Documentation](https://platform.openai.com/docs)
+- [OpenAI Node.js Client](https://github.com/openai/node-sdk)
+- [API Models Overview](https://platform.openai.com/docs/models)
