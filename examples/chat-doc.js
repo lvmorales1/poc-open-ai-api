@@ -64,39 +64,60 @@ async function chatLoop() {
     const thread = await client.beta.threads.create();
 
     console.log("\nChat ready. Type your question (or 'exit' to quit).\n");
+    console.log("For multi-line paste, type '/paste', then finish with 'END'.\n");
 
     const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
 
-    const ask = () => {
-        rl.question("You> ", async (input) => {
-            const question = input.trim();
-            if (!question || question.toLowerCase() === "exit") {
+    const sendMessage = async (text) => {
+        if (!text) return;
+        try {
+            await client.beta.threads.messages.create(thread.id, { role: "user", content: text });
+            const run = await client.beta.threads.runs.create(thread.id, { assistant_id: assistantId });
+            await pollRun(thread.id, run.id);
+            const answer = await fetchLastAssistantMessage(thread.id);
+            console.log(`Assistant> ${answer}\n`);
+        } catch (error) {
+            console.error(`Error: ${error.message}`);
+        }
+    };
+
+    let pasteMode = false;
+    let pasteBuffer = [];
+
+    rl.setPrompt("You> ");
+    rl.prompt();
+
+    rl.on("line", async (line) => {
+        const input = line ?? "";
+        if (!pasteMode) {
+            const trimmed = input.trim();
+            if (!trimmed) {
+                rl.prompt();
+                return;
+            }
+            if (trimmed.toLowerCase() === "exit") {
                 rl.close();
                 return;
             }
-
-            try {
-                await client.beta.threads.messages.create(thread.id, {
-                    role: "user",
-                    content: question,
-                });
-
-                const run = await client.beta.threads.runs.create(thread.id, {
-                    assistant_id: assistantId,
-                });
-
-                await pollRun(thread.id, run.id);
-                const answer = await fetchLastAssistantMessage(thread.id);
-                console.log(`Assistant> ${answer}\n`);
-            } catch (error) {
-                console.error(`Error: ${error.message}`);
+            if (trimmed === "/paste") {
+                pasteMode = true;
+                pasteBuffer = [];
+                console.log("Paste your text now. End with a single line: END\n");
+                return;
             }
-
-            ask();
-        });
-    };
-
-    ask();
+            await sendMessage(trimmed);
+        } else {
+            if (input.trim() === "END") {
+                pasteMode = false;
+                const fullText = pasteBuffer.join("\n");
+                pasteBuffer = [];
+                await sendMessage(fullText);
+            } else {
+                pasteBuffer.push(input);
+            }
+        }
+        rl.prompt();
+    });
 }
 
 chatLoop().catch((err) => {
